@@ -1,4 +1,4 @@
-package com.tutu.clouderp.Entity;
+package com.tutu.clouderp.auth.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mongodb.DBObject;
+import com.tutu.clouderp.Entity.Entity;
 @Document(collection="user")
 public class User implements Entity {
 
@@ -18,7 +19,8 @@ public class User implements Entity {
 	private String name;
 
 	private String password;
-
+	
+	private String moid;
 	private Set<String> roles = new HashSet<String>();
 
 	protected User() {
@@ -75,5 +77,13 @@ public class User implements Entity {
 		roles.add("admin");
 		user.setRoles(roles);
 		return user;
+	}
+
+	public String getMoid() {
+		return moid;
+	}
+
+	public void setMoid(String moid) {
+		this.moid = moid;
 	}
 }

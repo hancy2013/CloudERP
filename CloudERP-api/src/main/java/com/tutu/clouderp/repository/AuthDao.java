@@ -9,7 +9,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.User;
 
 public class AuthDao {
 

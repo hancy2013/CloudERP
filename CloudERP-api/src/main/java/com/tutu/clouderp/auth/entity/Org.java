@@ -1,4 +1,6 @@
-package com.tutu.clouderp.Entity;
+package com.tutu.clouderp.auth.entity;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 
@@ -11,7 +13,8 @@ package com.tutu.clouderp.Entity;
  * @author tutu
  * @date 2014-11-20
  */
-public class MO {
+@Document(collection="org")
+public class Org {
 	private String id;
 	private String name;
 	private String mmid;

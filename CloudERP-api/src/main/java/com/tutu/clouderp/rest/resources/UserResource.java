@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tutu.clouderp.Entity.TokenTransfer;
-import com.tutu.clouderp.Entity.User;
 import com.tutu.clouderp.Entity.UserTransfer;
-import com.tutu.clouderp.repository.UserRepository;
+import com.tutu.clouderp.auth.entity.User;
+import com.tutu.clouderp.auth.repository.UserRepository;
 import com.tutu.clouderp.session.Hex;
 import com.tutu.clouderp.session.SessionHolder;
 import com.tutu.clouderp.session.TokenUtils;

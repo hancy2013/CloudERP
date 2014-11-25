@@ -19,9 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tutu.clouderp.Entity.JsonViews;
-import com.tutu.clouderp.Entity.MM;
 import com.tutu.clouderp.Entity.NewsEntry;
-import com.tutu.clouderp.repository.MMRespository;
+import com.tutu.clouderp.auth.entity.MM;
+import com.tutu.clouderp.auth.repository.MMRepository;
 
 @Component
 @Path("/mm")
@@ -29,7 +29,7 @@ public class MMResource {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	private MMRespository mmRespository;
+	private MMRepository mmRespository;
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

@@ -23,15 +23,25 @@
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
     <!-- mongo -->
-	<mongo:mongo host="localhost" port="27017" />
-
-	<mongo:db-factory id="mongoDbFactory" dbname="auth" />
-
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg ref="mongoDbFactory" />
+	<mongo:mongo id="authMongo" host="localhost" port="27017" />
+	<mongo:db-factory id="authMongoFactory"  dbname="auth" />
+			
+	<bean id="authMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="authMongoFactory" />
 	</bean>
 
-	<mongo:repositories base-package="com.tutu.clouderp.repository" />
+	<mongo:repositories base-package="com.tutu.clouderp.auth.repository" mongo-template-ref="authMongoTemplate"/>
+	
+	<bean id="multiTenantMongoFactory" class="com.tutu.clouderp.MultiTenant.MultiTenantMongoDbFactory">
+		<constructor-arg index="0" ref="authMongo"/>
+		<constructor-arg index="1" value="mt"></constructor-arg>
+	</bean>
+	
+	<bean id="multiTenantMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="multiTenantMongoFactory" />
+	</bean>
+	
+	<mongo:repositories base-package="com.tutu.clouderp.repository" mongo-template-ref="multiTenantMongoTemplate"/>
 	<!-- 
 	<bean id="dataBaseInitializer" class="com.tutu.clouderp.repository.DataBaseInitializer" init-method="initDataBase"/>
 	 -->

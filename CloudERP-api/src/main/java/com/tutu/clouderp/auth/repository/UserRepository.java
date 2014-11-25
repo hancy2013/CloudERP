@@ -1,8 +1,8 @@
-package com.tutu.clouderp.repository;
+package com.tutu.clouderp.auth.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.User;
 
 /**
  * Interface for todo repository.

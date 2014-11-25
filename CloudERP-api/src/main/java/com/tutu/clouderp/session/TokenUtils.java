@@ -3,7 +3,7 @@ package com.tutu.clouderp.session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.User;
 
 
 public class TokenUtils

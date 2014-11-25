@@ -1,4 +1,4 @@
-package com.tutu.clouderp.Entity;
+package com.tutu.clouderp.auth.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 import com.tutu.clouderp.Entity.JsonViews;
 import com.tutu.clouderp.Entity.NewsEntry;
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.User;
 import com.tutu.clouderp.repository.NewsRepository;
 import com.tutu.clouderp.session.SessionHolder;
 

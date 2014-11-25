@@ -14,8 +14,8 @@ import javax.ws.rs.WebApplicationException;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.tutu.clouderp.Entity.User;
-import com.tutu.clouderp.repository.UserRepository;
+import com.tutu.clouderp.auth.entity.User;
+import com.tutu.clouderp.auth.repository.UserRepository;
 
 public class AuthFilter implements Filter {
 
@@ -33,9 +33,9 @@ public class AuthFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-		if (!httpServletRequest.getRequestURI().endsWith("authenticate")) {
-			String authToken = this
-					.extractAuthTokenFromRequest(httpServletRequest);
+		String authToken = this.extractAuthTokenFromRequest(httpServletRequest);
+		if (authToken != null
+				&& !httpServletRequest.getRequestURI().endsWith("authenticate")) {
 			String userName = TokenUtils.getUserNameFromToken(authToken);
 			boolean paas = false;
 			if (userName != null) {

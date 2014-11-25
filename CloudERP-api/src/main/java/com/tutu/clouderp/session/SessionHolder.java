@@ -1,6 +1,6 @@
 package com.tutu.clouderp.session;
 
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.User;
 
 public class SessionHolder {
     private static ThreadLocal<User> sessionThreadLocal = new ThreadLocal<User>() {

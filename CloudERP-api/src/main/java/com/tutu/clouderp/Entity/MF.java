@@ -1,6 +1,7 @@
 package com.tutu.clouderp.Entity;
 
 import org.bson.BasicBSONObject;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Ԫ����ֶ�
@@ -11,6 +12,7 @@ import org.bson.BasicBSONObject;
  * @author tutu
  * @date 2014-11-20
  */
+@Document(collection="mf")
 public abstract class MF {
 	protected String tid;
 	protected String id;

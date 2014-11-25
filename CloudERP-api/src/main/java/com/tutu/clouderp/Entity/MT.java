@@ -1,5 +1,7 @@
 package com.tutu.clouderp.Entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Ԫ��ݶ���
  * 
@@ -9,6 +11,7 @@ package com.tutu.clouderp.Entity;
  * @author tutu
  * @date 2014-11-20
  */
+@Document(collection="mt")
 public class MT {
 	private String id;
 	private String name;

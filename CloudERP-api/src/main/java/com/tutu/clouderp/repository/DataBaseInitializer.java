@@ -4,9 +4,11 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tutu.clouderp.Entity.MM;
 import com.tutu.clouderp.Entity.NewsEntry;
-import com.tutu.clouderp.Entity.User;
+import com.tutu.clouderp.auth.entity.MM;
+import com.tutu.clouderp.auth.entity.User;
+import com.tutu.clouderp.auth.repository.MMRepository;
+import com.tutu.clouderp.auth.repository.UserRepository;
 import com.tutu.clouderp.session.Hex;
 
 
@@ -22,7 +24,7 @@ public class DataBaseInitializer
 	@Autowired
 	private NewsRepository newsRepository;
 	@Autowired
-	private MMRespository mmRespository;
+	private MMRepository mmRespository;
 	protected DataBaseInitializer()
 	{
 		/* Default constructor for reflection instantiation */
