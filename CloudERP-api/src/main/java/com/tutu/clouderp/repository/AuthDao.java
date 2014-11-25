@@ -40,7 +40,7 @@ public class AuthDao {
 		try {
 			while (cursor.hasNext()) {
 				DBObject dbObject = cursor.next();
-				user = User.getMMFromDBObject(dbObject);
+//				user = User.getMMFromDBObject(dbObject);
 				break;
 			}
 		} finally {

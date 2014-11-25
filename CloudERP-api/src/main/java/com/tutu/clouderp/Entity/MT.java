@@ -1,5 +1,7 @@
 package com.tutu.clouderp.Entity;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -16,6 +18,7 @@ public class MT {
 	private String id;
 	private String name;
 	private String oid;
+	private List<MF> mfs;
 	public String getOid() {
 		return oid;
 	}
@@ -38,6 +41,14 @@ public class MT {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<MF> getMfs() {
+		return mfs;
+	}
+
+	public void setMfs(List<MF> mfs) {
+		this.mfs = mfs;
 	}
 	
 }

@@ -1,5 +1,8 @@
 package com.tutu.clouderp.auth.entity;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -12,9 +15,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author tutu
  * @date 2014-11-20
  */
+@Entity("mm")
 @Document(collection="mm")
 public class MM {
-	private String id;
+	@Id
+	private ObjectId id;
 	private String hostip;
 	private int port;
 	private String username;
@@ -29,11 +34,11 @@ public class MM {
 		this.weight = weight;
 	}
 
-	public String getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

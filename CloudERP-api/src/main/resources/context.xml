@@ -22,9 +22,9 @@
 	<context:component-scan base-package="com.tutu.clouderp.rest.resources" />
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
-    <!-- mongo -->
-	<mongo:mongo id="authMongo" host="localhost" port="27017" />
-	<mongo:db-factory id="authMongoFactory"  dbname="auth" />
+    <!-- auth mongo -->
+	<mongo:mongo id="mongo" host="10.255.242.25" port="27017" />
+	<mongo:db-factory id="authMongoFactory"  mongo-ref="mongo" dbname="auth" />
 			
 	<bean id="authMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg ref="authMongoFactory" />
@@ -32,8 +32,9 @@
 
 	<mongo:repositories base-package="com.tutu.clouderp.auth.repository" mongo-template-ref="authMongoTemplate"/>
 	
+	<!-- multi mongo-->
 	<bean id="multiTenantMongoFactory" class="com.tutu.clouderp.MultiTenant.MultiTenantMongoDbFactory">
-		<constructor-arg index="0" ref="authMongo"/>
+		<constructor-arg index="0" ref="mongo"/>
 		<constructor-arg index="1" value="mt"></constructor-arg>
 	</bean>
 	

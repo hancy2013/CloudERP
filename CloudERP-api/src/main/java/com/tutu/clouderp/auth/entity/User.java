@@ -3,18 +3,16 @@ package com.tutu.clouderp.auth.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.mongodb.DBObject;
-import com.tutu.clouderp.Entity.Entity;
 @Document(collection="user")
-public class User implements Entity {
-
-	private static final long serialVersionUID = 7773755976371308725L;
+@Entity("user")
+public class User{
 
 	@Id
-	private String id;
+	private ObjectId id;
 
 	private String name;
 
@@ -32,11 +30,11 @@ public class User implements Entity {
 		this.password = passwordHash;
 	}
 
-	public String getId() {
+	public ObjectId getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
@@ -68,16 +66,16 @@ public class User implements Entity {
 		this.password = password;
 	}
 	
-	public static User getMMFromDBObject(DBObject dbObject) {
-		User user = new User();
-		user.setId(dbObject.get("_id").toString());
-		user.setName((String) dbObject.get("name"));
-		user.setPassword((String) dbObject.get("password"));
-		Set<String> roles=new HashSet<String>();
-		roles.add("admin");
-		user.setRoles(roles);
-		return user;
-	}
+//	public static User getMMFromDBObject(DBObject dbObject) {
+//		User user = new User();
+//		user.setId(dbObject.get("_id").toString());
+//		user.setName((String) dbObject.get("name"));
+//		user.setPassword((String) dbObject.get("password"));
+//		Set<String> roles=new HashSet<String>();
+//		roles.add("admin");
+//		user.setRoles(roles);
+//		return user;
+//	}
 
 	public String getMoid() {
 		return moid;

@@ -1,5 +1,8 @@
 package com.tutu.clouderp.auth.entity;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -14,18 +17,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @date 2014-11-20
  */
 @Document(collection="org")
+@Entity("org")
 public class Org {
-	private String id;
+	@Id
+	private ObjectId id;
 	private String name;
 	private String mmid;
 	private String dbid;
 	private String adminemail;
-	private String adminpassword;
-	public String getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
