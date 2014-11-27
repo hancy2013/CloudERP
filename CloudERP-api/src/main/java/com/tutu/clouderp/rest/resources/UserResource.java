@@ -1,8 +1,10 @@
 package com.tutu.clouderp.rest.resources;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,15 +13,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.tutu.clouderp.Entity.TokenTransfer;
 import com.tutu.clouderp.Entity.UserTransfer;
+import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.auth.entity.User;
-import com.tutu.clouderp.auth.repository.UserRepository;
-import com.tutu.clouderp.session.Hex;
-import com.tutu.clouderp.session.SessionHolder;
+import com.tutu.clouderp.context.ContextHolder;
+import com.tutu.clouderp.session.PwdUtils;
 import com.tutu.clouderp.session.TokenUtils;
 
 
@@ -27,9 +30,9 @@ import com.tutu.clouderp.session.TokenUtils;
 @Path("/user")
 public class UserResource
 {
-
-	@Autowired
-	private UserRepository userRepository;
+	private static final Logger logger=LoggerFactory.getLogger(UserResource.class);
+	@Resource
+	private SystemDatastore systemDatastore;
 
 	/**
 	 * Retrieves the currently logged in user.
@@ -40,7 +43,7 @@ public class UserResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public UserTransfer getUser()
 	{
-		User user=SessionHolder.getSession();
+		User user=ContextHolder.getContext().getUser();
 		if(user==null) return null;
 		return new UserTransfer(user.getName(), createRoleMap(user));
 	}
@@ -61,10 +64,14 @@ public class UserResource
 	public TokenTransfer authenticate(@FormParam("username") String username, @FormParam("password") String password)
 	{
 		
-		User user = userRepository.findByName(username);
-        if (user == null || !user.getPassword().equals(new String(Hex.encode(password.getBytes())))) {
-        	throw new WebApplicationException(401);
-        }
+		User user = systemDatastore.get(User.class,username);
+        try {
+			if (user == null || !user.getPassword().equals(PwdUtils.eccrypt(password))) {
+				throw new WebApplicationException(401);
+			}
+		} catch (NoSuchAlgorithmException e) {
+			logger.error("some thing wrong",e);
+		}
         return new TokenTransfer(TokenUtils.createToken(user));
 	}
 

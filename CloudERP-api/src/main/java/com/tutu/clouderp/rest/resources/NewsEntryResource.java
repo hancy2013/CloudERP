@@ -25,13 +25,12 @@ import org.springframework.stereotype.Component;
 import com.tutu.clouderp.Entity.JsonViews;
 import com.tutu.clouderp.Entity.NewsEntry;
 import com.tutu.clouderp.auth.entity.User;
-import com.tutu.clouderp.repository.NewsRepository;
-import com.tutu.clouderp.session.SessionHolder;
+import com.tutu.clouderp.context.ContextHolder;
 
 
 @Component
 @Path("/news")
-public class NewsEntryResource
+public class NewsEntryResource extends BasicResource
 {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -40,8 +39,6 @@ public class NewsEntryResource
 	@Autowired
 	private ObjectMapper mapper;
 
-	@Autowired
-	private NewsRepository newsRepository;
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -55,7 +52,8 @@ public class NewsEntryResource
 		} else {
 			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 		}
-		List<NewsEntry> allEntries = this.newsRepository.findAll();
+		
+		List<NewsEntry> allEntries = getDataStore().find(NewsEntry.class).asList();;
 
 		return viewWriter.writeValueAsString(allEntries);
 	}
@@ -68,7 +66,7 @@ public class NewsEntryResource
 	{
 		this.logger.info("read(id)");
 
-		NewsEntry newsEntry = this.newsRepository.findById(id);
+		NewsEntry newsEntry = getDataStore().get(NewsEntry.class,id);
 		if (newsEntry == null) {
 			throw new WebApplicationException(404);
 		}
@@ -83,7 +81,9 @@ public class NewsEntryResource
 	{
 		this.logger.info("create(): " + newsEntry);
 
-		return this.newsRepository.save(newsEntry);
+		getDataStore().save(newsEntry);
+		
+		return newsEntry;
 	}
 
 
@@ -95,7 +95,9 @@ public class NewsEntryResource
 	{
 		this.logger.info("update(): " + newsEntry);
 
-		return this.newsRepository.save(newsEntry);
+		getDataStore().save(newsEntry);
+		
+		return newsEntry;
 	}
 
 
@@ -106,15 +108,15 @@ public class NewsEntryResource
 	{
 		this.logger.info("delete(id)");
 
-		this.newsRepository.delete(id);
+		getDataStore().delete(id);
 	}
 
 
 	private boolean isAdmin()
 	{
-		User user=SessionHolder.getSession();
+		User user=ContextHolder.getContext().getUser();
 		if(user==null) return false;
-		return SessionHolder.getSession().getRoles().contains("admin");
+		return user.getRoles().contains("admin");
 	}
 
 }

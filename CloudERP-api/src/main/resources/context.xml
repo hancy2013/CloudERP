@@ -18,32 +18,20 @@
 	<context:annotation-config />
 
 	<!-- INIT REST COMPONENTS -->
-
+	<context:property-placeholder location="classpath*:*clouderp.properties" />
 	<context:component-scan base-package="com.tutu.clouderp.rest.resources" />
-
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
-    <!-- auth mongo -->
-	<mongo:mongo id="mongo" host="10.255.242.25" port="27017" />
-	<mongo:db-factory id="authMongoFactory"  mongo-ref="mongo" dbname="auth" />
-			
-	<bean id="authMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg ref="authMongoFactory" />
+	<bean id="mongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg name="host" value="${sysmongo.host}" />
+		<constructor-arg name="port" value="${sysmongo.port}" />
+	</bean>
+	<bean id="morphia" class="org.mongodb.morphia.Morphia" />
+	<bean id="systemDatastore" class="com.tutu.clouderp.auth.dao.SystemDatastore">
+		<constructor-arg name="morphia" ref="morphia" />
+		<constructor-arg name="mongoClient" ref="mongoClient" />
+		<constructor-arg name="dbName" value="${sysmongo.dbname}" />
 	</bean>
 
-	<mongo:repositories base-package="com.tutu.clouderp.auth.repository" mongo-template-ref="authMongoTemplate"/>
-	
-	<!-- multi mongo-->
-	<bean id="multiTenantMongoFactory" class="com.tutu.clouderp.MultiTenant.MultiTenantMongoDbFactory">
-		<constructor-arg index="0" ref="mongo"/>
-		<constructor-arg index="1" value="mt"></constructor-arg>
-	</bean>
-	
-	<bean id="multiTenantMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg ref="multiTenantMongoFactory" />
-	</bean>
-	
-	<mongo:repositories base-package="com.tutu.clouderp.repository" mongo-template-ref="multiTenantMongoTemplate"/>
-	<!-- 
-	<bean id="dataBaseInitializer" class="com.tutu.clouderp.repository.DataBaseInitializer" init-method="initDataBase"/>
-	 -->
+	<!-- <bean id="dataBaseInitializer" class="com.tutu.clouderp.repository.DataBaseInitializer" 
+		init-method="initDataBase"/> -->
 </beans>

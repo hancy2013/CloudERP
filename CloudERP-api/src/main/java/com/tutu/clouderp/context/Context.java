@@ -1,39 +1,35 @@
 package com.tutu.clouderp.context;
 
-import org.mongodb.morphia.Datastore;
+import java.net.UnknownHostException;
 
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import com.mongodb.MongoClient;
 import com.tutu.clouderp.auth.entity.MM;
-import com.tutu.clouderp.auth.entity.Org;
 import com.tutu.clouderp.auth.entity.User;
 
 public class Context {
 	private User user;
-	private Org org;
-	private MM mm;
 	private Datastore datastore;
+
 	public User getUser() {
 		return user;
 	}
-	public void setUser(User user) {
+
+	public void setUser(User user) throws UnknownHostException {
 		this.user = user;
+		setDatastore();
 	}
-	public Org getOrg() {
-		return org;
-	}
-	public void setOrg(Org org) {
-		this.org = org;
-	}
-	public MM getMm() {
-		return mm;
-	}
-	public void setMm(MM mm) {
-		this.mm = mm;
-	}
+
 	public Datastore getDatastore() {
 		return datastore;
 	}
-	public void setDatastore(Datastore datastore) {
-		this.datastore = datastore;
+
+	private void setDatastore() throws UnknownHostException {
+		MM mm = this.user.getTenant().getMm();
+		MongoClient mongo = new MongoClient(mm.getHostip(), mm.getPort());
+		datastore = new Morphia().createDatastore(mongo, user.getTenant().getDbname());
 	}
-	
+
 }

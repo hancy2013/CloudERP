@@ -10,21 +10,22 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.WebApplicationException;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.auth.entity.User;
-import com.tutu.clouderp.auth.repository.UserRepository;
+import com.tutu.clouderp.context.Context;
+import com.tutu.clouderp.context.ContextHolder;
 
 public class AuthFilter implements Filter {
 
-	private UserRepository userRepository;
+	private SystemDatastore systemDatastore;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		userRepository = WebApplicationContextUtils.getWebApplicationContext(
-				filterConfig.getServletContext()).getBean(UserRepository.class);
+		systemDatastore = WebApplicationContextUtils.getWebApplicationContext(
+				filterConfig.getServletContext()).getBean(SystemDatastore.class);
 
 	}
 
@@ -34,16 +35,20 @@ public class AuthFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		String authToken = this.extractAuthTokenFromRequest(httpServletRequest);
-		if (authToken != null
-				&& !httpServletRequest.getRequestURI().endsWith("authenticate")) {
-			String userName = TokenUtils.getUserNameFromToken(authToken);
+		if(!httpServletRequest.getRequestURI().endsWith("authenticate")){
 			boolean paas = false;
-			if (userName != null) {
-				User user = userRepository.findByName(userName);
-				if (TokenUtils.validateToken(authToken, user)) {
-					SessionHolder.setSession(user);
-					paas = true;
+			if (authToken != null) {
+				String userName = TokenUtils.getUserNameFromToken(authToken);
+				if (userName != null) {
+					User user = systemDatastore.get(User.class,userName);
+					if (TokenUtils.validateToken(authToken, user)) {
+						Context context=new Context();
+						context.setUser(user);
+						ContextHolder.setContext(context);
+						paas = true;
+					}
 				}
+				
 			}
 			if (!paas) {
 				httpServletResponse

@@ -2,14 +2,12 @@ package com.tutu.clouderp.Entity;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
-@Document(collection="newentry")
-public class NewsEntry implements Entity
+@Entity("newentry")
+public class NewsEntry
 {
-
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;

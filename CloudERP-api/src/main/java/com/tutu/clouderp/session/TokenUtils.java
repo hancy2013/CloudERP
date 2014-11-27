@@ -74,8 +74,9 @@ public class TokenUtils
 		return signature.equals(TokenUtils.computeSignature(user, expires));
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("676f6e6731393837333137".equals(new String(Hex.encode("gong1987317".getBytes()))));
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+//		System.out.println("676f6e6731393837333137".equals(new String(Hex.encode("gong1987317".getBytes()))));
+		System.out.println(PwdUtils.eccrypt("000000"));
 //		System.out.println(Hex.decode("676f6e6731393837333137").toString());
 //		User user=new User();
 //		user.setEmail("gongxinong@gmail.com");

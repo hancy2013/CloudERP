@@ -16,7 +16,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
 	<!-- Map the REST Servlet to /rest/ -->
 	<servlet>
 		<servlet-name>RestService</servlet-name>

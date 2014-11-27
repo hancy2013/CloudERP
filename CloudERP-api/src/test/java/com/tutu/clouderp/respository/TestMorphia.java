@@ -4,13 +4,14 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,75 +20,81 @@ import com.mongodb.MongoClient;
 import com.tutu.clouderp.Entity.MF;
 import com.tutu.clouderp.Entity.MFText;
 import com.tutu.clouderp.Entity.MT;
+import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.auth.entity.MM;
-import com.tutu.clouderp.auth.entity.Org;
+import com.tutu.clouderp.auth.entity.Tenant;
 import com.tutu.clouderp.auth.entity.User;
+import com.tutu.clouderp.basicTest.BlogEntry;
 import com.tutu.clouderp.context.Context;
 import com.tutu.clouderp.context.ContextHolder;
+import com.tutu.clouderp.rest.resources.UserResource;
 import com.tutu.clouderp.session.Hex;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:context.xml")
-public class TestMorphia extends AbstractJUnit4SpringContextTests{
-//	@Resource
-//	private UserResource userResource;
-    
-    @Test
-    public void RegistOrg() throws UnknownHostException{
-    	MongoClient mongo = new MongoClient("10.255.242.25",27017);
-    	Datastore datastore = new Morphia().createDatastore(mongo, "auth");
-    	MM mm=new MM();
-    	mm.setId(new ObjectId());
-    	mm.setHostip("10.255.242.25");
-    	mm.setPort(27017);
-    	mm.setWeight(1);
-    	datastore.save(mm);
-    	
-    	Org org=new Org();
-		ObjectId objectId=new ObjectId();
-		org.setId(objectId);
-		org.setName("测试机构");
-		org.setMmid(mm.getId().toString());
-		org.setDbid("somedatabase");
-		datastore.save(org);
-		User user=new User("admin@test.com",new String(Hex.encode("000000".getBytes())));
-		user.setMoid(org.getId().toString());
-		datastore.save(user);
-    }
-    
-    @Test
-	public void LoginAndCreateMT() throws UnknownHostException{
-    	MongoClient mongo = new MongoClient("10.255.242.25",27017);
-    	Datastore datastore = new Morphia().createDatastore(mongo, "auth");
-		String username="admin@test.com";
-		String password="000000";
-		Context context=new Context();
-		Query<User> query=datastore.createQuery(User.class).filter("name", username);
-		User user=(User)query.asList().get(0);
+public class TestMorphia extends AbstractJUnit4SpringContextTests {
+	@Resource
+	private UserResource userResource;
+	@Autowired
+	private SystemDatastore systemDatastore;
+
+	@Test
+	public void RegistOrg() throws UnknownHostException {
+		MM mm = new MM();
+		mm.setId(new ObjectId());
+		mm.setHostip("10.255.242.25");
+		mm.setPort(27017);
+		mm.setWeight(1);
+		systemDatastore.save(mm);
+
+		Tenant tenant = new Tenant();
+		tenant.setName("测试机构");
+		tenant.setMm(mm);
+		tenant.setDbname("somedatabase");
+		systemDatastore.save(tenant);
+		User user = new User("admin@test.com", new String(Hex.encode("000000".getBytes())));
+		user.setTenant(tenant);
+		systemDatastore.save(user);
+	}
+
+	@Test
+	public void LoginAndCreateMT() throws UnknownHostException {
+		String username = "admin@test.com";
+		String password = "000000";
+		try {
+			userResource.authenticate(username, password);
+		} catch (Exception e) {
+			return;
+		}
+		Context context = new Context();
+		User user = systemDatastore.get(User.class, username);
 		context.setUser(user);
-		Org org=datastore.get(Org.class, new ObjectId(user.getMoid()));
-		context.setOrg(org);
-		MM mm=datastore.get(MM.class, new ObjectId(org.getMmid()));
-		context.setMm(mm);
 		ContextHolder.setContext(context);
-		
-		
-		MongoClient mongo2 = new MongoClient(ContextHolder.getContext().getMm().getHostip(),ContextHolder.getContext().getMm().getPort());
-		Datastore datastore2 = new Morphia().createDatastore(mongo2, org.getDbid());
-			MT mt=new MT();
-			mt.setOid(org.getId().toString());
-			mt.setName("测试表");
-			MF mf=new MFText();
-			mf.setName("测试字段"); 
-			List<MF> mfs=new ArrayList<MF>();
-			mfs.add(mf);
-			mt.setMfs(mfs);
-			datastore2.save(mt);
-			
-			
-//			mfRepository.save(mf);
-//		} catch (UnknownHostException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
+		MT mt = new MT();
+		mt.setName("测试表");
+		MF mf = new MFText();
+		mf.setName("测试字段");
+		List<MF> mfs = new ArrayList<MF>();
+		mfs.add(mf);
+		mt.setMfs(mfs);
+		ContextHolder.getContext().getDatastore().save(mt);
+	}
+
+	@Test
+	public void TestRef() throws UnknownHostException {
+		MongoClient mongo = new MongoClient("10.255.242.25", 27017);
+		Datastore datastore = new Morphia().createDatastore(mongo, "test");
+		// Author author=new Author();
+		// author.setEmailAddress("test@test.com");
+		// datastore.save(author);
+		// BlogEntry blog=new BlogEntry();
+		// blog.setAuthor(author);
+		// blog.setBody("test");
+		// datastore.save(blog);
+		// datastore.save(author);
+
+		BlogEntry blog2 = datastore.get(BlogEntry.class, new ObjectId("547571e611d5bce0da311138"));
+		blog2.getAuthor();
 	}
 }
