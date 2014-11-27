@@ -3,6 +3,7 @@ package com.tutu.clouderp.Entity;
 import java.util.List;
 
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 /**
  * 元数据表
@@ -15,17 +16,10 @@ import org.mongodb.morphia.annotations.Entity;
  */
 @Entity("mt")
 public class MT {
+	@Id
 	private String id;
 	private String name;
 	private List<MF> mfs;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

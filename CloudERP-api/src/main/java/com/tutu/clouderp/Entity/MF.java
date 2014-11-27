@@ -1,6 +1,8 @@
 package com.tutu.clouderp.Entity;
 
-import org.bson.BasicBSONObject;
+import org.mongodb.morphia.annotations.Entity;
+
+
 
 /**
  * 元数据字段
@@ -11,32 +13,23 @@ import org.bson.BasicBSONObject;
  * @author tutu
  * @date 2014-11-20
  */
-public abstract class MF {
-	protected String tid;
-	protected String id;
+@Entity("mf")
+public abstract class MF extends BaseEntity{
 	protected String name;
-	public TypeEnum type;
-	public TypeEnum getType() {
-		return type;
-	}
-	public enum TypeEnum { TEXT, NUM , FORMULA }
-	public String getTid() {
-		return tid;
-	}
-	public void setTid(String tid) {
-		this.tid = tid;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public abstract BasicBSONObject toBson();
+	// --------crud操作用------------
+	private String rawValue;
+	protected String getRawValue() {
+		return rawValue;
+	}
+	protected void setRawValue(String rawValue) {
+		this.rawValue = rawValue;
+	}
+	abstract Object getRealValue();
+	
 }

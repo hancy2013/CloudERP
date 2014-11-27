@@ -80,21 +80,8 @@ public class TestMorphia extends AbstractJUnit4SpringContextTests {
 		mt.setMfs(mfs);
 		ContextHolder.getContext().getDatastore().save(mt);
 	}
-
-	@Test
-	public void TestRef() throws UnknownHostException {
-		MongoClient mongo = new MongoClient("10.255.242.25", 27017);
-		Datastore datastore = new Morphia().createDatastore(mongo, "test");
-		// Author author=new Author();
-		// author.setEmailAddress("test@test.com");
-		// datastore.save(author);
-		// BlogEntry blog=new BlogEntry();
-		// blog.setAuthor(author);
-		// blog.setBody("test");
-		// datastore.save(blog);
-		// datastore.save(author);
-
-		BlogEntry blog2 = datastore.get(BlogEntry.class, new ObjectId("547571e611d5bce0da311138"));
-		blog2.getAuthor();
+	
+	public void operateWithdbObject(){
 	}
+
 }

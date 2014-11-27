@@ -108,7 +108,7 @@ public class NewsEntryResource extends BasicResource
 	{
 		this.logger.info("delete(id)");
 
-		getDataStore().delete(id);
+		getDataStore().delete(NewsEntry.class, id);
 	}
 
 
