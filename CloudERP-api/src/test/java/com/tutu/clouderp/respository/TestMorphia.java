@@ -1,8 +1,6 @@
 package com.tutu.clouderp.respository;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -10,21 +8,16 @@ import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.mongodb.MongoClient;
-import com.tutu.clouderp.Entity.MF;
-import com.tutu.clouderp.Entity.MFText;
 import com.tutu.clouderp.Entity.MT;
 import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.auth.entity.MM;
 import com.tutu.clouderp.auth.entity.Tenant;
 import com.tutu.clouderp.auth.entity.User;
-import com.tutu.clouderp.basicTest.BlogEntry;
 import com.tutu.clouderp.context.Context;
 import com.tutu.clouderp.context.ContextHolder;
 import com.tutu.clouderp.rest.resources.UserResource;
@@ -73,15 +66,17 @@ public class TestMorphia extends AbstractJUnit4SpringContextTests {
 
 		MT mt = new MT();
 		mt.setName("测试表");
-		MF mf = new MFText();
-		mf.setName("测试字段");
-		List<MF> mfs = new ArrayList<MF>();
-		mfs.add(mf);
-		mt.setMfs(mfs);
+//		MF mf = new MFText();
+//		mf.setName("测试字段");
+//		List<MF> mfs = new ArrayList<MF>();
+//		mfs.add(mf);
+//		mt.setMfs(mfs);
 		ContextHolder.getContext().getDatastore().save(mt);
+		MT mymt=ContextHolder.getContext().getDatastore().get(MT.class,"5477db7611d504bf46c88862");
 	}
 	
 	public void operateWithdbObject(){
+		
 	}
 
 }
