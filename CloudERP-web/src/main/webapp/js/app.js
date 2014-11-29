@@ -31,7 +31,10 @@ angular.module('CloudERP', ['ngRoute', 'ngCookies', 'CloudERP.services'])
 				templateUrl: 'force/create.html',
 				controller: ForceController
 			});
-			
+			$routeProvider.when('/mt',{
+				templateUrl: 'settings/mt_index.html',
+				controller: MtController
+			});
 			$locationProvider.hashPrefix('!');
 			
 			/* Register error provider that shows message on failed requests or redirects to login page on
@@ -188,11 +191,14 @@ function ForceController($scope, $location,MMService) {
 		});
 	};
 };
-
+function MtController($scope, $location,MTService){
+	$scope.mts = MTService.query();
+	$scope.mt= new MTService();
+}
 
 var services = angular.module('CloudERP.services', ['ngResource']);
 
-var baseUrl = 'http://localhost:9999';
+var baseUrl = 'http://localhost:8080';
 
 services.factory('UserService', function($resource) {
 	
@@ -215,4 +221,9 @@ services.factory('NewsService', function($resource) {
 services.factory('MMService', function($resource) {
 	
 	return $resource(baseUrl+'/rest/mm',[]);
+});
+
+services.factory('MTService', function($resource) {
+	
+	return $resource(baseUrl+'/rest/mt',[]);
 });

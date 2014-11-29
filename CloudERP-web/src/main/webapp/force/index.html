@@ -1,5 +1,5 @@
 <div class="pull-right">
-	<a href="#!/force/create" class="btn btn-default" ng-show="hasRole('admin')" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
+	<a href="#!/force/create" class="btn btn-default" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
 </div>
 <div class="page-header">
 	<h3>MM</h3>
@@ -10,8 +10,6 @@
 			<tr>
 				<th>ip</th>
 				<th>端口</th>
-				<th>用户名</th>
-				<th>密码</th>
 				<th>权重</th>
 			</tr>
 		</thead>
@@ -19,8 +17,6 @@
 			<tr ng-repeat="mm in mms">
 				<td>{{mm.hostip}}</td>
 				<td>{{mm.port}}</td>
-				<td>{{mm.username}}</td>
-				<td>{{mm.password}}</td>
 				<td>{{mm.weight}}</td>
 			</tr>
 		</tbody>
