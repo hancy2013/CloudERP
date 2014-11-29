@@ -1,0 +1,398 @@
+<style> 
+ol.controls{ margin-right: 1px; background: #FFF; padding: 2px;}
+ol.controls li {
+    display: block;
+    margin: 3px;
+    padding: 3px;
+    border: 0px;
+	solid #cccccc;
+    color: #0088cc;
+    background: #eeeeee; }
+  .ui-sortable-placeholder { border: 3px red; visibility: visible !important; height: 20px !important; }
+  .ui-sortable-placeholder * { visibility: hidden; }
+</style> 
+<script> 
+$(document).ready(function() {
+		sort=function(){
+			$("#studio").sortable({
+			})
+			
+			$("ol").sortable({
+				connectWith : "ol"
+			})
+		};
+		sort();
+//		bindEvent= function(){
+//			$("#studio ol.controls > li").each(function(){
+//				var that = $(this);
+//	    		that.bind({
+//	    			mouseenter:function(e){
+//			    		if(e.currentTarget==e.target){
+//			    			$('#btn-group').show();
+//	    					$('#btn-group').insertBefore(that);
+//			    		}
+//	    			},
+//	    			mouseleave:function(e){
+//	    				if(e.target==e.currentTarget && !($('#btn-group')[0].contains(e.relatedTarget))){
+//	    					$('#btn-group').hide();
+//	    				}
+//			    	}
+//	    		});
+//			});
+//			$("#studio div.panel-heading").each(function(){
+//			    var that = $(this);
+//			    that.bind({
+//			    	mouseenter:function(e){
+//			    		if(e.currentTarget==e.target){
+//			    			$('#btn-group').show();
+//	    					$('#btn-group').insertBefore(that);
+//			    		}
+//	    			},
+//	    			mouseleave:function(e){
+//	    				if(e.target==e.currentTarget && !($('#btn-group')[0].contains(e.relatedTarget))){
+//	    					$('#btn-group').hide();
+//	    				}
+//			    	}
+//	    		});
+//			});
+//		}
+		trash = function(id){
+				var controls=getPanelControls(id);
+				$('#avaliableFields div ol').append(controls);
+				$('#'+id).remove();
+				sort();
+		}
+		var panelSettings={part_1:{id:"part_1",title:"新建部分",d_display:"1",e_display:"1",layout:"2"},
+		                   part_2:{id:"part_2",title:"新建部分",d_display:"1",e_display:"1",layout:"2"}};
+		var fieldSettings={
+				field_1:{fieldid:"field_1",readonly:false,required:false},
+				field_2:{fieldid:"field_2",readonly:false,required:false}
+		}
+		var currFieldSetting={fieldid:"",readonly:"",required:""};
+		var currPanelSetting={id:"",title:"",d_display:"",e_display:"",layout:""};
+		
+		newPart = function(){
+			openSetting("-1")
+		}
+		
+		openFieldSetting = function(fieldId){
+			currFieldSetting=fieldSettings[fieldId];
+			renderFieldSetting(currFieldSetting);
+			$('#field-setting').modal('show');
+		}
+		
+		renderFieldSetting = function(fieldSetting){
+			var fieldproperty=$("input[name='fieldproperty']");
+			fieldproperty[0].checked=fieldSetting.readonly;
+			fieldproperty[1].checked=fieldSetting.required;
+		}
+		
+		saveFieldSetting = function(){
+			var fieldsetting=fieldSettings[currFieldSetting.fieldid];
+			fieldsetting.readonly=$("input[name='fieldproperty']")[0].checked;
+			fieldsetting.required=$("input[name='fieldproperty']")[1].checked;
+			$('#field-setting').modal('hide');
+		}
+		
+		openSetting = function(panelId){
+			var panelSetting=panelSettings[panelId];
+			if(panelSetting){
+				currPanelSetting.id=panelSetting.id;
+				currPanelSetting.title=panelSetting.title;
+				currPanelSetting.d_display=panelSetting.d_display;
+				currPanelSetting.e_display=panelSetting.e_display;
+				currPanelSetting.layout=panelSetting.layout;
+			}else{
+				currPanelSetting=createNewPanelSetting();
+			}
+			renderPartSetting(currPanelSetting);
+			$('#part-setting').modal('show');
+		}
+		
+		createNewPanelId = function(){
+			var genPanelid="panel_" + Math.ceil(Math.random()*1000);
+			while(panelSettings[genPanelid]!=null){
+				genPanelid="panel_"+Math.ceil(Math.random()*1000);
+			}
+			return genPanelid;
+		}
+		
+		createNewPanelSetting = function(){
+			var newPanelSetting={
+					id:createNewPanelId(),
+					title:"新建部份",
+					d_display:"1",
+					e_display:"1",
+					layout:"2"
+			};
+			return newPanelSetting;
+		}
+		
+		createNewPart = function(panelSetting){
+			return '<div id="'+panelSetting.id+'" class="panel panel-info">'+
+			'<div id="btn-group" class="btn-group pull-right">'+
+			'<a class="btn btn-small" data-toggle="modal" onclick="openSetting(\''+panelSetting.id+'\')">'+
+			'<i class="icon-cog"></i></a>'+
+			'<a class="btn btn-small" data-toggle="modal" onclick="trash(\''+panelSetting.id +'\')">'+
+			'<i class="icon-trash"></i></a>'+
+			'</div>'+
+			'<div class="panel-heading">'+
+			 '<h3 class="panel-title">'+panelSetting.title+'</h3>'+
+			'</div>'+
+			'<div class="panel-body">'+
+			createControlDiv(panelSetting.layout)+
+			'</div>';
+		}
+		
+		renderPartSetting = function(partSetting){
+			$('#title').val(partSetting.title);
+			$('#d_display').attr('checked',partSetting.d_display=="1"?true:false);
+			$('#e_display').attr('checked',partSetting.e_display=="1"?true:false);
+			$("input[name='layout']:eq("+(partSetting.layout-1)+")").attr("checked","checked");
+		}
+		
+		saveSetting = function(){
+			currPanelSetting.title=$('#title').val();
+			currPanelSetting.d_display=$('#d_display').is(':checked')==false?"0":"1";
+			currPanelSetting.e_display=$('#e_display').is(':checked')==false?"0":"1";
+			currPanelSetting.layout=$("input[name='layout']:checked").val();
+			if(!panelSettings[currPanelSetting.id]){
+				var newPartHtml=createNewPart(currPanelSetting)
+				$('#studio').append(newPartHtml);
+				var newPartSetting={
+						id:currPanelSetting.id,
+						title:currPanelSetting.title,
+						d_display:currPanelSetting.d_display,
+						e_display:currPanelSetting.e_display,
+						layout:currPanelSetting.layout
+				};
+				panelSettings[currPanelSetting.id]=newPartSetting;
+			}else{
+				var panelSetting = panelSettings[currPanelSetting.id];
+				if(panelSetting.title!=currPanelSetting.title){
+					renderTitle(currPanelSetting.id,currPanelSetting.title);
+				}
+				if(panelSetting.layout!=currPanelSetting.layout){
+					renderLayout(currPanelSetting.id,currPanelSetting.layout);
+				}
+				panelSetting.id=currPanelSetting.id;
+				panelSetting.title=currPanelSetting.title;
+				panelSetting.d_display=currPanelSetting.d_display;
+				panelSetting.e_display=currPanelSetting.e_display;
+				panelSetting.layout=currPanelSetting.layout;
+			}
+			sort();
+			$('#part-setting').modal('hide');
+		}
+		
+		renderTitle = function(panelId,title){
+			var panelHeader=$('#'+panelId).children('.panel-heading').children('.panel-title');
+			panelHeader[0].innerHTML=title;
+		}
+		
+		renderLayout = function(panelId,column){
+				var panelControls=getPanelControls(panelId);
+				$('#'+panelId).children('.panel-body').children().remove();
+				$('#'+panelId).children('.panel-body').append(createControlDiv(column));
+				if(column=="1"){
+					$('#'+panelId).children('.panel-body').children('ol').append(panelControls);	
+				}else if(column=="2"){
+					var firstcolumn=$('#'+panelId).children('.panel-body').children('ol:first');
+					var secondcolumn=$('#'+panelId).children('.panel-body').children('ol:last');
+					for(var i=0;i<panelControls.length;i++){
+						if(i%2==0){
+							firstcolumn.append(panelControls[i]);
+						}else{
+							secondcolumn.append(panelControls[i]);
+						}
+					}
+				}
+		}
+		createControlDiv = function(column){
+			if(column=="1"){
+				return '<ol class="controls span6 text-left"></ol>';
+			}else if (column=="2"){
+				return '<ol class="controls span3 text-left"></ol><ol class="controls span3 text-left"></ol>';
+			}
+		}
+		getPanelControls = function(panelId){
+			return $('#'+panelId).children('.panel-body').children('ol').children();
+		}
+		getAllPanel = function(){
+			var layout=[];
+			var partlayouts=$('#studio').children('div');
+			for(i=0;i<partlayouts.length;i++){
+				var partlayout={id:"",panelSetting:"",fields:""};
+				partlayout.id=partlayouts[i].id;
+				partlayout.panelSetting=panelSettings[partlayouts[i].id];
+				partlayout.fields=getPanelFields(partlayouts[i].id);
+				layout.push(partlayout);
+			}
+			return layout;
+		}
+		
+		getPanelFields = function(panelId){
+			var fields=[];
+			var column=panelSettings[panelId].layout;
+			if(column=="1"){
+				var field_controls=$('#'+panelId).children('.panel-body').children('ol').children();
+				for(i=0;i<field_controls.length;i++){
+					fields.push(fieldSettings[field_controls[i].id]);
+				}
+			}else if(column=="2"){
+				var first_field_controls=$('#'+panelId).children('.panel-body').children('ol:first').children();
+				var second_field_controls=$('#'+panelId).children('.panel-body').children('ol:last').children();
+				for(i=0;i<first_field_controls.length;i++){
+					fields.push(fieldSettings[first_field_controls[i].id]);
+				}
+				for(i=0;i<second_field_controls.length;i++){
+					fields.push(fieldSettings[second_field_controls[i].id]);
+				}
+			}
+			return fields;
+		}
+		/**
+		$.ajax({
+            url: '/rest/layout/getFieldList/5477385ae9693b0eaecb053d',
+            type: 'GET',
+            data: {timeStamp:new Date().getTime()},
+            error: function(){
+                alert('网络错误，请联系管理员');
+            },
+            success: function(data){
+            	for(index in data){
+            		setFieldSettings(data[index])
+            		var li="<li id="+data[index]['_id']+"><a class=\"icon-cog pull-right\" onclick=openFieldSetting(\'"+data[index]['_id']+"\')></a>"+data[index]['name']+"</li>";
+                 	$("#avaliableFields ol").append(li); 
+                }
+            }
+		})**/
+		setFieldSettings = function(field){
+			var dm_field={};
+			if(field.display=="0"){
+				dm_field.readonly=true;
+			}
+			dm_field.fieldid=field['_id'];
+			dm_field.required=false;
+    		fieldSettings[dm_field.fieldid]=dm_field;
+		}
+})
+</script>
+<input type="hidden" id="tid" value="<%=tid%>"/>
+<div class="container">
+<div class="span7 row">
+<button class="btn btn-primary btn-sm" onclick="getAllPanel()">保存页面布局</button>
+<button class="btn btn-success btn-sm" onclick="newPart()">新建部份</button>
+</div>
+<div id="studio" class="span7">
+<div id="part_1" class="panel panel-info">
+<!--buttongroup-->
+<div class="btn-group pull-right">
+<a class="btn btn-small" data-toggle="modal" onclick="openSetting('part_1')">
+<i class="icon-cog"></i></a>
+<a class="btn btn-small" data-toggle="modal" onclick="trash('part_1')">
+<i class="icon-trash"></i></a>
+</div>
+<div class="panel-heading">
+  <h3 class="panel-title">新建部分</h3>
+</div>
+<div class="panel-body">
+<ol class="controls span3 text-left">
+</ol>
+<ol class="controls span3 text-left">
+</ol>
+</div>
+</div>
+  
+<div id="part_2" class="panel panel-info">
+<!--buttongroup-->
+<div class="btn-group pull-right">
+<a class="btn btn-small" data-toggle="modal" onclick="openSetting('part_2')">
+<i class="icon-cog"></i></a>
+<a class="btn btn-small" data-toggle="modal" onclick="trash('part_2')">
+<i class="icon-trash"></i></a>
+</div>
+<div class="panel-heading">
+  <h3 class="panel-title">新建部分</h3>
+</div>
+<div class="panel-body">
+<ol class="controls span3 text-left">
+</ol>
+<ol class="controls span3 text-left">
+</ol>
+</div>
+</div>
+</div>
+<div id="avaliableFields" class="span4 container">
+<div id="part_3" class="panel panel-info">
+<div class="panel-heading">
+  <h3 class="panel-title">可用字段</h3>
+</div>
+<div class="panel-body">
+  <ol class="controls span3 text-left">
+  </ol>
+</div>
+</div>
+</div>
+<!--part-setting-->
+<div class="modal fade" id="part-setting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">部分属性</h4>
+      </div>
+      <div class="modal-body">
+       <form class="form-horizontal" role="form">
+      	<div class="form-group">
+      			<label class="col-sm-4" for="input01">部分名称</label>
+      			<div class="col-sm-5">
+      				<input type="text" class="form-control" id="title"/>
+      			</div>
+      	</div>
+      	<div class="form-group">
+			<label class="col-sm-4">在以下位置显示标题</label>
+			<div class="col-sm-5"><input id="d_display" type="checkbox" value="1"/>详细信息页面</div>
+			<div class="col-sm-5"><input id="e_display" type="checkbox" value="1"/>编辑页面</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-4">布局</label>
+			<div class="col-sm-5"><input type="radio" name="layout" id="layout1" value="1">1-列</div>
+			<div class="col-sm-5"><input type="radio" name="layout" id="layout2" value="2">2-列</div>
+		</div>
+		</form>
+      </div>
+      <div class="modal-footer center">
+      		<button type="button" class="btn btn-primary" onclick="saveSetting()">确定</button>  
+      		<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--field-setting-->
+<div class="modal fade" id="field-setting" tabindex="-1" role="dialog" aria-labelledby="field-settingLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="field-settingLabel">字段属性</h4>
+      </div>
+      <div class="modal-body">	
+      	<div class="form-group">
+			<label class="col-sm-4">字段属性</label>
+			<div class="col-sm-2"><input type="radio" name="fieldproperty" value="1">只读</div>
+			<div class="col-sm-2"><input type="radio" name="fieldproperty" value="2">必需</div>
+		</div>
+	</div>
+      <div class="modal-footer center">
+		<button type="button" class="btn btn-primary" onclick="saveFieldSetting()">确定</button>  
+		<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	  </div>
+	 </div>
+</div>
+</div>
+
+<div>
+</body> 
+</html>

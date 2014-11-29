@@ -1,0 +1,63 @@
+<% include ../../include %>
+<% include ../../includeTree %>
+<SCRIPT type="text/javascript">
+    var IDMark_Switch = "_switch",
+            IDMark_Icon = "_ico",
+            IDMark_Span = "_span",
+            IDMark_Input = "_input",
+            IDMark_Check = "_check",
+            IDMark_Edit = "_edit",
+            IDMark_Remove = "_remove",
+            IDMark_Ul = "_ul",
+            IDMark_A = "_a";
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        view: {
+            addDiyDom: addDiyDom
+        }
+    };
+
+    var zNodes = [
+        { id: 0, name: "CEO",open:true}
+    ];
+    function addDiyDom(treeId, treeNode) {
+        var aObj = $("#" + treeNode.tId + IDMark_A);
+        if (treeNode.id == 0) {
+            var editStr ="<a href='/admin/org/new?pid="+treeNode.id+"'>添加下级机构</a>";
+            aObj.after(editStr);
+        }else{
+            var editStr = "<a href='/admin/org/edit?id="+treeNode.id+"'>编辑</a>" +
+                    "<a href='/admin/org/delete?id="+treeNode.id+"'>删除</a>" +
+                    "<a href='/admin/org/new?pid="+treeNode.id+"'>添加下级机构</a>";
+            aObj.after(editStr);
+        }
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: '/admin/org/getOrgs',
+            type: 'GET',
+            data: {timeStamp:new Date().getTime()},
+            error: function(){
+                alert('网络错误，请联系管理员');
+            },
+            success: function(orgs){
+                orgs.forEach(function(org){
+                    zNodes.push({
+                        id:org._id,
+                        pId:org.pid,
+                        name:org.name
+                    })
+                })
+                $.fn.zTree.init($("#tree"), setting, zNodes);
+            }
+        })
+
+    });
+</SCRIPT>
+<div class="container">
+    <div id="tree" class="ztree"></div>
+</div>
