@@ -44,6 +44,7 @@
 		<constructor-arg name="mongoClient" ref="mongoClient" />
 		<constructor-arg name="dbName" value="${sysmongo.dbname}" />
 	</bean>
+	<!--  -->
 	<import resource="spring/spring-dubbo.xml" />
 	<!-- <bean id="dataBaseInitializer" class="com.tutu.clouderp.repository.DataBaseInitializer" 
 		init-method="initDataBase"/> -->

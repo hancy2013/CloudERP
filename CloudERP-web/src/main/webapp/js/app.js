@@ -22,18 +22,26 @@ angular.module('CloudERP', ['ngRoute', 'ngCookies', 'CloudERP.services'])
 				controller: IndexController
 			});
 			
-			$routeProvider.when('/force',{
-				templateUrl: 'force/index.html',
-				controller: ForceController
+			$routeProvider.when('/mm',{
+				templateUrl: 'mm/index.html',
+				controller: MMController
 			});
 			
-			$routeProvider.when('/force/create',{
-				templateUrl: 'force/create.html',
-				controller: ForceController
+			$routeProvider.when('/mm/create',{
+				templateUrl: 'mm/create.html',
+				controller: MMController
 			});
 			$routeProvider.when('/mt',{
-				templateUrl: 'settings/mt_index.html',
+				templateUrl: 'mt/mt_index.html',
 				controller: MtController
+			});
+			$routeProvider.when('/settings',{
+				templateUrl: 'settings/index.html',
+				controller: MtController
+			});
+			$routeProvider.when('/org',{
+				templateUrl: 'org/index.html',
+				controller: OrgController
 			});
 			$locationProvider.hashPrefix('!');
 			
@@ -179,7 +187,7 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 	};
 };
 
-function ForceController($scope, $location,MMService) {
+function MMController($scope, $location,MMService) {
 	
 	$scope.mms = MMService.query();
 	
@@ -187,13 +195,20 @@ function ForceController($scope, $location,MMService) {
 	
 	$scope.save = function() {
 		$scope.mm.$save(function() {
-			$location.path('/force');
+			$location.path('/mm');
 		});
 	};
 };
 function MtController($scope, $location,MTService){
 	$scope.mts = MTService.query();
 	$scope.mt= new MTService();
+	$scope.thismt=function(mt){
+		$scope.mfs=mt.mfs
+	}
+}
+
+function OrgController($scope, $location,OrgService){
+	$scope.orgs = OrgService.query();
 }
 
 var services = angular.module('CloudERP.services', ['ngResource']);
@@ -226,4 +241,9 @@ services.factory('MMService', function($resource) {
 services.factory('MTService', function($resource) {
 	
 	return $resource(baseUrl+'/rest/mt',[]);
+});
+
+services.factory('OrgService', function($resource) {
+	
+	return $resource(baseUrl+'/rest/org',[]);
 });

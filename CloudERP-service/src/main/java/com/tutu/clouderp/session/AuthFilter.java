@@ -2,7 +2,6 @@ package com.tutu.clouderp.session;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -14,7 +13,7 @@ import com.tutu.clouderp.context.ContextHolder;
 import com.tutu.clouderp.dto.auth.User;
 
 public class AuthFilter implements ContainerRequestFilter {
-	private SystemDatastore systemDatastore;
+	private static final SystemDatastore systemDatastore=(SystemDatastore)GlobalContext.getBean("systemDatastore");
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)
@@ -25,7 +24,6 @@ public class AuthFilter implements ContainerRequestFilter {
 			if (authToken != null) {
 				String userName = TokenUtils.getUserNameFromToken(authToken);
 				if (userName != null) {
-					systemDatastore=(SystemDatastore)GlobalContext.getBean("systemDatastore");
 					User user = systemDatastore.get(User.class, userName);
 					if (TokenUtils.validateToken(authToken, user)) {
 						Context context = new Context();

@@ -7,9 +7,12 @@ import org.mongodb.morphia.annotations.Reference;
 public class Org {
 	@Id
 	private String id;
-	@Reference
+	@Reference(value="pid",idOnly=true)
 	private Org parentOrg;
 	private String name;
+	public Org(){
+		super();
+	}
 	public String getId() {
 		return id;
 	}

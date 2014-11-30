@@ -25,6 +25,8 @@
 		ref="mmService" protocol="dubbo,rest" />
 	<dubbo:service interface="com.tutu.clouderp.api.MTService"
 		ref="mtService" protocol="dubbo,rest" />
+	<dubbo:service interface="com.tutu.clouderp.api.OrgService"
+		ref="orgService" protocol="dubbo,rest" />
 	<!-- 设置超时时间 -->
 	<dubbo:provider timeout="5000" />
 </beans>

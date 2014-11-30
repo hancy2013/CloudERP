@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.PostPersist;
-import org.mongodb.morphia.annotations.PrePersist;
 import org.mongodb.morphia.annotations.Reference;
 
 import com.tutu.clouderp.dto.auth.User;

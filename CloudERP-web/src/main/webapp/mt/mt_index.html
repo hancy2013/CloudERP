@@ -1,0 +1,32 @@
+<div class="pull-right">
+	<a href="#!/mm/create" class="btn btn-default" title="Create"><span
+		class="glyphicon glyphicon-plus"></span></a>
+</div>
+<div class="page-header">
+	<h3>MT</h3>
+</div>
+
+<table class="col-sm-3 table-condensed">
+	<thead>
+		<tr>
+			<th>表名</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="mt in mts">
+			<td><a ng-click="thismt(mt)">{{mt.name}}</a></td>
+		</tr>
+	</tbody>
+</table>
+<table class="col-sm-3 table-condensed">
+	<thead>
+		<tr>
+			<th>字段名</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="mf in mfs">
+			<td><a href="#!/mfs/#{mt.id}">{{mf.name}}</a></td>
+		</tr>
+	</tbody>
+</table>
