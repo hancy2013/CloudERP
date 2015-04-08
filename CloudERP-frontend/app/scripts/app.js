@@ -56,7 +56,7 @@ angular
         redirectTo: '/'
       });
   }).config(function(formlyConfigProvider) {
-  var templates = 'views/fields/';
+  var templates = '/views/fields/';
   var formly = templates + 'formly-field-';
   var fields = [
     'checkbox',

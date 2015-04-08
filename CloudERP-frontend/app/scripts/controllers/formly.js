@@ -26,7 +26,7 @@ angular.module('cloudErpFrontendApp')
       required: true,
       label: 'Start Date',
       type: 'date',
-      format: 'dd/MM/yyyy'
+      format: 'yyyy-MM-dd'
     }, {
       key: 'startTime',
       required: true,
@@ -48,21 +48,18 @@ angular.module('cloudErpFrontendApp')
       hstep: 1,
       mstep: 5,
       ismeridian: true
+    },{
+    	key:'select',
+    	type:'select'
     }];
 
-    $scope.formOptions = {
+    
+
+	$scope.formOptions = {
       hideSubmit: false,
       submitCopy: 'Submit'
     };
-
-    $scope.post = {};
-
-    $scope.formOptions = {
-      hideSubmit: false,
-      submitCopy: '保存'
-    };
-
     $scope.onSubmit = function() {
-      console.log($scope.post);
+      console.log();
     }
   });
