@@ -1,0 +1,4 @@
+ <form name="joinForm" ng-submit="join()">
+    <auto:fields fields="schema" data="user"></auto:fields>
+    <button type="submit" class="btn btn-default btn-lg btn-block" ng-class="{'btn-primary':joinForm.$valid}">Join</button>
+</form>
