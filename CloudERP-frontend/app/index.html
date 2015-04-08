@@ -36,13 +36,11 @@
             <a class="navbar-brand" href="#/">cloudErpFrontend</a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+          <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="MainCtrl">
 
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/formly">Formly</a></li>
-              <li><a ng-href="#/schemaForm">SchemaForm</a></li>
+              <li ng-repeat="menu in menus"><a ng-href="#/{{menu.href}}" ui-sref-active="active">{{menu.name}}</a></li>
             </ul>
           </div>
         </div>
@@ -87,15 +85,25 @@
     <script src="bower_components/objectpath/lib/ObjectPath.js"></script>
     <script src="bower_components/angular-schema-form/dist/schema-form.js"></script>
     <script src="bower_components/angular-schema-form/dist/bootstrap-decorator.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-autoFields-bootstrap/autofields.min.js"></script>
+    <script src="bower_components/angular-autoFields-bootstrap/autofields-bootstrap.min.js"></script>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/ngReact/ngReact.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/controllers/hello.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/formly.js"></script>
         <script src="scripts/controllers/angular-schema-form.js"></script>
+        <script src="scripts/controllers/autofield.js"></script>
+        <script src="scripts/controllers/react.js"></script>
+        <script src="scripts/controllers/jsx.js"></script>
+        
         <!-- endbuild -->
 </body>
 </html>

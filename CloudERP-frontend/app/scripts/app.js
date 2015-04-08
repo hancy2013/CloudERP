@@ -17,7 +17,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'formly',
-    'schemaForm'
+    'schemaForm',
+    'autofields',
+    'ui.bootstrap',
+    'react'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -36,6 +39,18 @@ angular
       .when('/schemaForm', {
         templateUrl: 'views/schemaform.html',
         controller: 'FormCtrl'
+      })
+      .when('/autoField', {
+        templateUrl: 'views/autofield.html',
+        controller: 'AutoFieldCtrl'
+      })
+      .when('/react', {
+        templateUrl: 'views/react.html',
+        controller: 'ReactCtrl'
+      })
+      .when('/jsx', {
+        templateUrl: 'views/jsx.html',
+        controller: 'JsxCtrl'
       })
       .otherwise({
         redirectTo: '/'

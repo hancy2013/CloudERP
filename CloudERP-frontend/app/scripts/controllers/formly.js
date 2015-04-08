@@ -8,36 +8,61 @@
  * Controller of the cloudErpFrontendApp
  */
 angular.module('cloudErpFrontendApp')
-  .controller('FormlyCtrl', function ($scope) {
+  .controller('FormlyCtrl', function($scope) {
+     $scope.formData = {};
+
     $scope.formFields = [{
-      key: 'title',
+      key: 'name',
       type: 'text',
-      label: '名称',
+      label: 'Name',
+      required: true
+    }, {
+      key: 'description',
+      type: 'text',
+      label: 'Description',
+      required: true
+    }, {
+      key: 'startDate',
       required: true,
-      disabled: false,
-      placeholder:'测试',
-      description:'测试描述'
+      label: 'Start Date',
+      type: 'date',
+      format: 'dd/MM/yyyy'
     }, {
-      key: 'content',
-      type: 'textarea',
-      label: '内容',
-      required: true
+      key: 'startTime',
+      required: true,
+      label: 'Start Time',
+      type: 'time',
+      hstep: 1,
+      mstep: 5,
+      ismeridian: true
     }, {
-      key: 'image',
-      type: 'text',
-      label: '图片',
-      required: true
+      key: 'endDate',
+      label: 'End',
+      type: 'date',
+      format: 'dd/MM/yyyy'
+    }, {
+      key: 'endTime',
+      required: true,
+      label: 'End Time',
+      type: 'time',
+      hstep: 1,
+      mstep: 5,
+      ismeridian: true
     }];
 
-    $scope.post={};
-    
     $scope.formOptions = {
-      uniqueFormId: true,
+      hideSubmit: false,
+      submitCopy: 'Submit'
+    };
+
+    $scope.post = {};
+
+    $scope.formOptions = {
       hideSubmit: false,
       submitCopy: '保存'
     };
 
-    $scope.onSubmit = function(){
+    $scope.onSubmit = function() {
       console.log($scope.post);
     }
   });

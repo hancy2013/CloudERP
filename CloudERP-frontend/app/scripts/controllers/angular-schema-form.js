@@ -50,6 +50,10 @@ angular.module('cloudErpFrontendApp')
             type: "password",
             placeholder: "Don't hold back"
           }
+        },
+        birthday: {
+          type: "string",
+          format: "date"
         }
       }
     };

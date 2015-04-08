@@ -33,6 +33,11 @@ module.exports = function(config) {
       'bower_components/objectpath/lib/ObjectPath.js',
       'bower_components/angular-schema-form/dist/schema-form.js',
       'bower_components/angular-schema-form/dist/bootstrap-decorator.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/angular-autoFields-bootstrap/autofields.min.js',
+      'bower_components/angular-autoFields-bootstrap/autofields-bootstrap.min.js',
+      'bower_components/react/react.js',
+      'bower_components/ngReact/ngReact.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
