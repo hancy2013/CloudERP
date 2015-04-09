@@ -32,4 +32,8 @@ public class Context {
 		datastore = new Morphia().createDatastore(mongo, user.getTenant().getDbname());
 	}
 
+	public void setDatastore(Datastore datastore) {
+		this.datastore = datastore;
+	}
+
 }

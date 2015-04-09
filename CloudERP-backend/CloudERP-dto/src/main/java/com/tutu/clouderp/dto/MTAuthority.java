@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.mongodb.morphia.annotations.Entity;
 
+import com.tutu.clouderp.model.MT;
+
 @Entity("mtauthority")
 public class MTAuthority{
 	private MT mt;

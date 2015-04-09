@@ -20,13 +20,13 @@ import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.basicTest.BaseServiceTests;
 import com.tutu.clouderp.context.Context;
 import com.tutu.clouderp.context.ContextHolder;
-import com.tutu.clouderp.dto.MF;
-import com.tutu.clouderp.dto.MFText;
-import com.tutu.clouderp.dto.MT;
 import com.tutu.clouderp.dto.Org;
 import com.tutu.clouderp.dto.auth.MM;
 import com.tutu.clouderp.dto.auth.Tenant;
 import com.tutu.clouderp.dto.auth.User;
+import com.tutu.clouderp.model.MF;
+import com.tutu.clouderp.model.MFText;
+import com.tutu.clouderp.model.MT;
 import com.tutu.clouderp.session.PwdUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -91,7 +91,7 @@ public class TestMorphia extends BaseServiceTests {
 		MT mt = new MT();
 		mt.setName("测试表");
 		MF mf = new MFText();
-		mf.setName("测试字段");
+		mf.setKey("测试字段");
 		List<MF> mfs = new ArrayList<MF>();
 		mfs.add(mf);
 		mt.setMfs(mfs);

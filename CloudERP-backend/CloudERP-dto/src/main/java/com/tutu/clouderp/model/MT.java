@@ -1,4 +1,4 @@
-package com.tutu.clouderp.dto;
+package com.tutu.clouderp.model;
 
 import java.util.List;
 
