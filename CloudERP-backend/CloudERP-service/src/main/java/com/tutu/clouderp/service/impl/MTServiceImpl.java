@@ -4,10 +4,11 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import com.tutu.clouderp.api.MTService;
@@ -25,9 +26,10 @@ public class MTServiceImpl extends BasicService implements MTService {
 	}
 
 	@GET
+	@Path("{mid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public MT mt(@QueryParam("tid") String tid) {
-		return getDataStore().get(MT.class,tid);
+	public MT mt(@PathParam("mid") String mid) {
+		return getDataStore().get(MT.class,new ObjectId(mid));
 	}
 
 }

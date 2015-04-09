@@ -16,7 +16,8 @@
     "ngReact": "latest",
     "angular-bootstrap": "latest",
     "angular-i18n": "~1.3.15",
-    "angular-ui-select": "~0.11.2"
+    "angular-ui-select": "~0.11.2",
+    "restangular": "~1.5.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0"

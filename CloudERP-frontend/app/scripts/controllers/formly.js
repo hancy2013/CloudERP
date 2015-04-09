@@ -8,12 +8,15 @@
  * Controller of the cloudErpFrontendApp
  */
 angular.module('cloudErpFrontendApp')
-  .controller('FormlyCtrl', function($scope) {
-    $scope.formData = {
-      select: 'a'
-    };
-
-    $scope.formFields = [{
+  .controller('FormlyCtrl', function($scope,Restangular) {
+    $scope.formData = {};
+    
+    Restangular.one('mt', '55268f7c6fb1f8bda4612632').get().then(function(mt){
+      $scope.formFields=mt.mfs;
+    });
+    
+    $scope.formFields2 = [{
+      id:null,
       key: 'name',
       type: 'text',
       label: 'Name',

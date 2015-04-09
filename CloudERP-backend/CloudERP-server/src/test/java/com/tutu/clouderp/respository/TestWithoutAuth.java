@@ -18,7 +18,7 @@ public class TestWithoutAuth {
 	public Datastore ds;
 	@Before
 	public void initDs() throws UnknownHostException{
-		Mongo mongo=new Mongo("10.255.242.25",27017);
+		Mongo mongo=new Mongo("localhost",27017);
 		ds=new Morphia().createDatastore(mongo, "sysmongo");
 	}
 	

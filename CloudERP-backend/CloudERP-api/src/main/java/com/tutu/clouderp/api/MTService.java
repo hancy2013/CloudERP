@@ -6,4 +6,5 @@ import com.tutu.clouderp.model.MT;
 
 public interface MTService {
 	public List<MT> list();
+	public MT mt(String mid);
 }

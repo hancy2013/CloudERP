@@ -21,7 +21,8 @@ angular
     'autofields',
     'ui.bootstrap',
     'react',
-    'ui.select'
+    'ui.select',
+    'restangular'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -84,4 +85,6 @@ angular
   uiSelectConfig.resetSearchInput = true;
 }).config(function(timepickerConfig) {
   timepickerConfig.showSeconds=true;
+}).config(function(RestangularProvider) {
+  RestangularProvider.setBaseUrl('http://localhost:8080/rest/');
 });
