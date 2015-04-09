@@ -82,4 +82,6 @@ angular
   //uiSelectConfig.search-enabled=true;
   uiSelectConfig.theme = 'bootstrap';
   uiSelectConfig.resetSearchInput = true;
+}).config(function(timepickerConfig) {
+  timepickerConfig.showSeconds=true;
 });

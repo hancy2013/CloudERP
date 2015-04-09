@@ -11,7 +11,7 @@
 			ng-model="result[options.key || index]"
 			ng-required="options.required"
 			ng-disabled="options.disabled"
-			ng-options="option.value as option.name group by option.group for option in options.options">
+			ng-options="option as option group by option.group for option in options.options">
 	</select>
    <p id="{{id}}_description" class="help-block" ng-if="options.description">{{options.description}}</p>
 </div>

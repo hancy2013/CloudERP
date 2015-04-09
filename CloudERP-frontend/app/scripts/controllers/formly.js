@@ -17,12 +17,8 @@ angular.module('cloudErpFrontendApp')
       key: 'name',
       type: 'text',
       label: 'Name',
-      required: true
-    }, {
-      key: 'description',
-      type: 'text',
-      label: 'Description',
-      required: true
+      required: true,
+      disabled: true
     }, {
       key: 'startDate',
       required: true,
@@ -34,61 +30,90 @@ angular.module('cloudErpFrontendApp')
       required: true,
       label: 'Start Time',
       type: 'time',
-      hstep: 1,
-      mstep: 5,
-      ismeridian: true
-    }, {
-      key: 'endDate',
-      label: 'End',
-      type: 'date',
-      format: 'dd/MM/yyyy'
-    }, {
-      key: 'endTime',
-      required: true,
-      label: 'End Time',
-      type: 'time',
+      format: 'hh:mm',
       hstep: 1,
       mstep: 5,
       ismeridian: true
     }, {
       key: 'select',
       type: 'select',
-      options: [{
-        name: 'A',
-        value: 'a'
-      }]
+      options: ['a', 'b']
     }, {
       key: 'multiselect',
       label: 'multiselect',
-      placeholder:'select one',
+      placeholder: 'select one',
       type: 'multiselect',
+      options: ['测试中文Adam@gmail.com',
+        '测试中文2Adam@gmail.com'
+      ]
+    }, {
+      key: "textarea",
+      label: '测试文本区',
+      type: 'textarea',
+      lines: 6
+    }, {
+      key: 'checkbox',
+      label: '测试复选框',
+      type: 'checkbox'
+    }, {
+      key: 'radio',
+      label: '测试Radio',
+      type: 'radio',
       options: [{
-        name: '测试中文',
-        value: 'Adam@gmail.com'
+        name: '测试Radio1',
+        value: '1'
+      }, {
+        name: '测试Radio2',
+        value: '2'
       }]
+    }, {
+      key: 'number',
+      label: '测试数字',
+      type: 'number',
+      min: 10,
+      max: 100,
+      minlength: 2,
+      maxlength: 3
+    }, {
+      key: 'email',
+      label: '测试email',
+      type: 'email'
     }];
 
-    $scope.mode = {};
-  $scope.person = {};
-  $scope.people = [
-    { name: 'Adam',      email: 'adam@email.com',      age: 12, country: 'United States' },
-    { name: 'Amalie',    email: 'amalie@email.com',    age: 12, country: 'Argentina' },
-    { name: 'Estefanía', email: 'estefania@email.com', age: 21, country: 'Argentina' },
-    { name: 'Adrian',    email: 'adrian@email.com',    age: 21, country: 'Ecuador' },
-    { name: 'Wladimir',  email: 'wladimir@email.com',  age: 30, country: 'Ecuador' },
-    { name: 'Samantha',  email: 'samantha@email.com',  age: 30, country: 'United States' },
-    { name: 'Nicole',    email: 'nicole@email.com',    age: 43, country: 'Colombia' },
-    { name: 'Natasha',   email: 'natasha@email.com',   age: 54, country: 'Ecuador' },
-    { name: 'Michael',   email: 'michael@email.com',   age: 15, country: 'Colombia' },
-    { name: 'Nicolás',   email: 'nicolas@email.com',    age: 43, country: 'Colombia' }
-  ];
 
+    $scope.toPrettyJSON = function(obj, tabWidth) {
+      var strippedObj = angular.copy(obj);
+      angular.forEach(strippedObj, function removeFormFieldForPerformancePurposes(field) {
+        delete field.formField;
+      });
+      return JSON.stringify(strippedObj, null, Number(tabWidth));
+    };
 
+    $scope.$watch('formFieldsStr', function onOptionsUpdated(newValue) {
+      try {
+        $scope.formFields = $parse(newValue)({});
+        $scope.formFieldsError = false;
+      } catch (e) {
+        $scope.formFieldsError = true;
+      }
+    });
+    $scope.$watch('formDataStr', function onDataUpdated(newValue) {
+      try {
+        $scope.formData = $parse(newValue)({});
+        $scope.formDataError = false;
+      } catch (e) {
+        $scope.formDataError = true;
+      }
+    });
+    $scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
+    $scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
+    $scope.submittedData = null;
     $scope.formOptions = {
       hideSubmit: false,
       submitCopy: 'Submit'
     };
     $scope.onSubmit = function() {
-      console.log();
+      $scope.submittedData = $scope.formData;
+      console.log($scope.submittedData);
     }
   });
