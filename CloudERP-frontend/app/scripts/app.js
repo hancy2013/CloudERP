@@ -20,7 +20,8 @@ angular
     'schemaForm',
     'autofields',
     'ui.bootstrap',
-    'react'
+    'react',
+    'ui.select'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -67,14 +68,18 @@ angular
     'radio',
     'select',
     'text',
-    'textarea'
+    'textarea',
+    'multiselect',
+    'date',
+    'time'
   ];
 
   angular.forEach(fields, function(val) {
     formlyConfigProvider.setTemplateUrl(val, formly + val + '.html');
   });
 
-  formlyConfigProvider.setTemplateUrl('date', templates + 'date.html');
-  formlyConfigProvider.setTemplateUrl('time', templates + 'time.html');
-
-});;
+}).config(function(uiSelectConfig) {
+  //uiSelectConfig.search-enabled=true;
+  uiSelectConfig.theme = 'bootstrap';
+  uiSelectConfig.resetSearchInput = true;
+});

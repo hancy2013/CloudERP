@@ -1,0 +1,14 @@
+<div class="form-group" ng-class="{'has-error': options.formField.$invalid}">
+	<label for="{{id}}">
+		{{options.label || 'Select'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<ui-select multiple ng-model="result[options.key || index]">
+	    <ui-select-match placeholder="{{options.placeholder}}">{{$item.name}} &lt;{{$item.value}}&gt;</ui-select-match>
+	    <ui-select-choices repeat="option in options.options | filter: $select.search track by option.name">
+	        <div ng-bind-html="option.name | highlight: $select.search"></div>
+	        <div ng-bind-html="option.value | highlight: $select.search"></div>
+	    </ui-select-choices>
+	</ui-select>
+   <p id="{{id}}_description" class="help-block" ng-if="options.description">{{options.description}}</p>
+</div>
