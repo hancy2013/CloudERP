@@ -11,7 +11,7 @@ angular.module('cloudErpFrontendApp')
   .controller('FormlyCtrl', function($scope,Restangular) {
     $scope.formData = {};
     
-    Restangular.one('mt', '55268f7c6fb1f8bda4612632').get().then(function(mt){
+    Restangular.one('mt', '5527c6414936c1b268c45233').get().then(function(mt){
       $scope.formFields=mt.mfs;
     });
     
@@ -118,5 +118,6 @@ angular.module('cloudErpFrontendApp')
     $scope.onSubmit = function() {
       $scope.submittedData = $scope.formData;
       console.log($scope.submittedData);
+      Restangular.all('data/c').post($scope.submittedData,{mid:'5527c6414936c1b268c45233'});
     }
   });

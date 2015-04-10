@@ -2,15 +2,12 @@ package com.tutu.clouderp.session;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
 
 import com.tutu.clouderp.auth.dao.SystemDatastore;
 import com.tutu.clouderp.context.Context;
 import com.tutu.clouderp.context.ContextHolder;
-import com.tutu.clouderp.dto.auth.User;
 
 public class AuthFilter implements ContainerRequestFilter {
 	private static final SystemDatastore systemDatastore=(SystemDatastore)GlobalContext.getBean("systemDatastore");

@@ -1,5 +1,8 @@
 package com.tutu.clouderp.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+
 public class MFText extends MF {
 	protected boolean isunique;
 	protected String placeholder;
@@ -31,5 +34,10 @@ public class MFText extends MF {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@JsonIgnore(true)
+	public Object getRawValue() {
+		return stringValue;
 	}
 }

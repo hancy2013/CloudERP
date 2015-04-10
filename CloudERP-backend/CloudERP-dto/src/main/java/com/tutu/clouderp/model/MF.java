@@ -1,6 +1,6 @@
 package com.tutu.clouderp.model;
 
-import org.mongodb.morphia.annotations.Entity;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.tutu.clouderp.dto.BaseEntity;
 
@@ -19,6 +19,8 @@ public abstract class MF extends BaseEntity {
 	protected boolean required;
 	protected boolean disabled;
 	protected String defaultValue;
+
+	protected String stringValue;
 
 	public String getKey() {
 		return key;
@@ -61,4 +63,10 @@ public abstract class MF extends BaseEntity {
 	}
 
 	abstract String getType();
+
+	public void setStringValue(String stringValue) {
+		this.stringValue = stringValue;
+	}
+	@JsonIgnore
+	public abstract Object getRawValue();
 }

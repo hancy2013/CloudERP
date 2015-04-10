@@ -1,5 +1,7 @@
 package com.tutu.clouderp.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class MFCheckBox extends MF{
 	private String description;
 	
@@ -13,6 +15,11 @@ public class MFCheckBox extends MF{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@JsonIgnore
+	public Object getRawValue() {
+		return stringValue;
 	}
 
 }
