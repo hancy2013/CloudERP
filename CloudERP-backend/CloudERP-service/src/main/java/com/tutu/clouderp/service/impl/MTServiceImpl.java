@@ -29,7 +29,7 @@ public class MTServiceImpl extends BasicService implements MTService {
 	@Path("{mid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public MT mt(@PathParam("mid") String mid) {
-		return getDataStore().get(MT.class,new ObjectId(mid));
+		return getDataStore().get(MT.class,  new ObjectId(mid));
 	}
 
 }

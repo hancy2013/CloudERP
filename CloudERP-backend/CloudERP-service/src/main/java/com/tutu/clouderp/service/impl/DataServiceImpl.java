@@ -1,13 +1,17 @@
 package com.tutu.clouderp.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +25,7 @@ import com.alibaba.dubbo.common.json.JSON;
 import com.alibaba.dubbo.common.json.ParseException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.tutu.clouderp.api.DataService;
 import com.tutu.clouderp.api.MTService;
@@ -51,7 +56,7 @@ public class DataServiceImpl implements DataService {
 	@POST
 	@Path("/c")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void add(@QueryParam("mid") String mid,
+	public void create(@QueryParam("mid") String mid,
 			@Context HttpServletRequest request) {
 		Map<String, String> postData = null;
 		try {
@@ -66,10 +71,32 @@ public class DataServiceImpl implements DataService {
 		logger.debug(postData.toString());
 	}
 
+	@GET
+	@Path("/r")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DBObject> read(@QueryParam("mid") String mid,
+			@QueryParam("page") Integer page,
+			@QueryParam("pagesize") Integer pagesize) {
+		return getData(mid, 1, 10);
+	}
+
+	public List<DBObject> getData(String collectionName, int page, int pagesize) {
+		List<DBObject> data = new ArrayList<>();
+		int skip = (page - 1) * pagesize;
+		DBCursor dbCursor = getCollection(collectionName).find().sort(null)
+				.skip(skip).limit(pagesize);
+		while (dbCursor.hasNext()) {
+			DBObject dbObject = dbCursor.next();
+			data.add(dbObject);
+		}
+
+		return data;
+	}
+
 	private void save(MT mt, Map<String, String> dataMap) {
 		DBObject dbObject = new BasicDBObject();
 		for (MF mf : mt.getMfs()) {
-			mf.setStringValue(dataMap.get(mf.getKey()));
+			mf.setStringValue(String.valueOf(dataMap.get(mf.getKey())));
 			dbObject.put(mf.getKey(), mf.getRawValue());
 		}
 		getCollection(mt.getId()).save(dbObject);
